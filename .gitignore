@@ -1,3 +1,5 @@
+project/images/*
+
 ## Core latex/pdflatex auxiliary files:
 documentation/*.aux
 documentation/*.lof

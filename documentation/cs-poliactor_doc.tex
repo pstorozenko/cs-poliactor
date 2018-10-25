@@ -19,45 +19,67 @@ Zaprojektowanie i implementacja aplikacji wykrywającej twarz w obrazie z kamery
 
 \section{Wymagania}
 
-Do poprawnego działania programu konieczne są:
+Do poprawnego działania programu konieczne będą:
 
 \begin{itemize}
-	\item Python 3.6 lub nowszy
-	\item ...
+	\item Docker - wymagania dostępne na stronie producenta, są zależne od systemu operacyjnego
+	\item 1GB przestrzeni dyskowej
+	\item przeglądarka internetowa z obsługą JavaScript
 \end{itemize}
 
-\section{Źródła - dla nas do wybrania podczas tworzenia projektu}
-\subsection{Face detection}
+\section{Wymagania funkcjonalne}
 \begin{itemize}
-	\item \href{http://vis-www.cs.umass.edu/fddb/}{FDDB} - Face Detection Data Set and Benchmark Home
-	\item \href{https://medium.com/wassa/modern-face-detection-based-on-deep-learning-using-python-and-mxnet-5e6377f22674}{Medium: Modern Face Detection} - z wykorzystaniem pythona i mxnet, architektura MTCNN (implementacje w innych pakietach też pewnie będą bez problemu dostępne
-	\item \href{https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/}{pyimagesearch: face recognition} - długi artykuł o realizacji projektu, jest też o wykrywaniu z video
-	\item \href{https://www.hackster.io/mjrobot/real-time-face-recognition-an-end-to-end-project-a10826}{Real time face recognition} = zrobione na raspberry więc na PC pewnie nie będzie działało tak z bańki
-	\item \href{https://realpython.com/face-recognition-with-python/}{Real python Face detection} - pierwszy z dwóch artykułów, raczej bez szału ale widać, że proste rozwiązanie, można na początek wziąć jako prototyp
-	\item \href{https://realpython.com/face-detection-in-python-using-a-webcam/}{Real python webcam} - druga część, tutaj już z kamerką
-	\item \href{https://www.pyimagesearch.com/2015/12/21/increasing-webcam-fps-with-python-and-opencv/}{Increasing FPS} - jakiś artykuł o zwiększaniu wydajności.
-	\item \href{https://pjreddie.com/darknet/yolo/}{YOLO} - dobre gówno tylko nie wiem czy będzie działało dla twarzy, trzeba zrobić research
-	\item \href{https://www.quora.com/Which-library-is-best-for-face-recognition-from-a-real-time-video-language-Python}{Quora} - linki do kilku fajnych rzeczy
-	\item \href{https://github.com/ageitgey/face_recognition}{face recognition github} - pakiecik na githubie
-	\item \href{https://github.com/cmusatyalab/openface}{open face} - inny pakiecik
-	\item \href{https://medium.freecodecamp.org/making-your-own-face-recognition-system-29a8e728107c}{freecodecamp} - face recognition system
-	\item \href{https://towardsdatascience.com/one-shot-learning-face-recognition-using-siamese-neural-network-a13dcf739e}{ine shot learning}
-\end{itemize}
-\subsection{Python wykrywanie kamery}
-w kilku z powyższych jest już ten problem uwzględniony
-\begin{itemize}
-	\item \href{http://www.chioka.in/python-live-video-streaming-example/}{Ex1}
-	\item \href{https://github.com/yushuhuang/webcam}{ex2}
-	\item \href{https://benhowell.github.io/guide/2015/03/09/opencv-and-web-cam-streaming}{ex3}
-	\item \href{https://stackoverflow.com/questions/14140495/how-to-capture-a-video-and-audio-in-python-from-a-camera-or-webcam}{ex4}
+	\item \textbf{podgląd obrazu z kamery} - obraz z kamery będzie wyświetlany w czasie rzeczywistym w głównym oknie przeglądarki po lewej stronie okna w oknie o rozmiarach $500 \times 375$
+	\item \textbf{wykryta twarz} - wykryta twarz będzie się pojawiała w czasie zbliżonym do rzeczywistego po lewej stronie okna przeglądarki w oknie o stałym rozmiarze
+	\item \textbf{najbardziej podobna twarz} - twarz polityka lub aktora będzie wyświetlana w oknie o stałym rozmiarze obok twarzy użytkownika
+	\item \textbf{bounding box} - bounding box nie jest funkcjonalnością kluczową a co za tym idzie konieczną. Będzie dodany o ile uda się uzyskać wystarczająco niskie opóźnienie odpowiedzi z serwera
+	\item \textbf{ilość zdjęć znanych osób}:
+		\begin{itemize}
+			\item aktorzy - ???
+			\item politycy - ???
+		\end{itemize}
+	\item \textbf{obsługa wielu twarzy} - w podstawowej wersji aplikacji porównywana będzie tylko twarz która na nagraniu jest większa w rozumieniu pola liczonego w pikselach. W wersji rozszerzonej dodana będzie obsługa wielu twarzy.
 \end{itemize}
 
-\subsection{Podobieństwo twarzy}
+\section{Wymagania niefunkcjonalne}
+
 \begin{itemize}
-	\item \href{https://www.linkedin.com/pulse/using-deep-learning-fashion-similarity-face-vaibhav-gusain/}{LinkedIn artykuł}
-	\item \href{http://fizzylogic.nl/2017/08/04/which-celebrity-are-you-a-celebrity-scanner-built-with-clarifai/}{celebscan}
-	\item \href{https://blog.biolab.si/2016/11/25/celebrity-lookalike-or-how-to-make-students-love-machine-learning/}{celebrity lookalike}
+	\item \textbf{czas reakcji} - przewidywany czas reakcji to ok $0.5 sec$ w przypadku pesymistycznym, obraz wykryty odświeżany z częstotliwością ok 4x na sekundę
 \end{itemize}
+
+
+% \section{Źródła - dla nas do wybrania podczas tworzenia projektu}
+% \subsection{Face detection}
+% \begin{itemize}
+% 	\item \href{http://vis-www.cs.umass.edu/fddb/}{FDDB} - Face Detection Data Set and Benchmark Home
+% 	\item \href{https://medium.com/wassa/modern-face-detection-based-on-deep-learning-using-python-and-mxnet-5e6377f22674}{Medium: Modern Face Detection} - z wykorzystaniem pythona i mxnet, architektura MTCNN (implementacje w innych pakietach też pewnie będą bez problemu dostępne
+% 	\item \href{https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/}{pyimagesearch: face recognition} - długi artykuł o realizacji projektu, jest też o wykrywaniu z video
+% 	\item \href{https://www.hackster.io/mjrobot/real-time-face-recognition-an-end-to-end-project-a10826}{Real time face recognition} = zrobione na raspberry więc na PC pewnie nie będzie działało tak z bańki
+% 	\item \href{https://realpython.com/face-recognition-with-python/}{Real python Face detection} - pierwszy z dwóch artykułów, raczej bez szału ale widać, że proste rozwiązanie, można na początek wziąć jako prototyp
+% 	\item \href{https://realpython.com/face-detection-in-python-using-a-webcam/}{Real python webcam} - druga część, tutaj już z kamerką
+% 	\item \href{https://www.pyimagesearch.com/2015/12/21/increasing-webcam-fps-with-python-and-opencv/}{Increasing FPS} - jakiś artykuł o zwiększaniu wydajności.
+% 	\item \href{https://pjreddie.com/darknet/yolo/}{YOLO} - dobre gówno tylko nie wiem czy będzie działało dla twarzy, trzeba zrobić research
+% 	\item \href{https://www.quora.com/Which-library-is-best-for-face-recognition-from-a-real-time-video-language-Python}{Quora} - linki do kilku fajnych rzeczy
+% 	\item \href{https://github.com/ageitgey/face_recognition}{face recognition github} - pakiecik na githubie
+% 	\item \href{https://github.com/cmusatyalab/openface}{open face} - inny pakiecik
+% 	\item \href{https://medium.freecodecamp.org/making-your-own-face-recognition-system-29a8e728107c}{freecodecamp} - face recognition system
+% 	\item \href{https://towardsdatascience.com/one-shot-learning-face-recognition-using-siamese-neural-network-a13dcf739e}{ine shot learning}
+% \end{itemize}
+% \subsection{Python wykrywanie kamery}
+% w kilku z powyższych jest już ten problem uwzględniony
+% \begin{itemize}
+% 	\item \href{http://www.chioka.in/python-live-video-streaming-example/}{Ex1}
+% 	\item \href{https://github.com/yushuhuang/webcam}{ex2}
+% 	\item \href{https://benhowell.github.io/guide/2015/03/09/opencv-and-web-cam-streaming}{ex3}
+% 	\item \href{https://stackoverflow.com/questions/14140495/how-to-capture-a-video-and-audio-in-python-from-a-camera-or-webcam}{ex4}
+% \end{itemize}
+
+% \subsection{Podobieństwo twarzy}
+% \begin{itemize}
+% 	\item \href{https://www.linkedin.com/pulse/using-deep-learning-fashion-similarity-face-vaibhav-gusain/}{LinkedIn artykuł}
+% 	\item \href{http://fizzylogic.nl/2017/08/04/which-celebrity-are-you-a-celebrity-scanner-built-with-clarifai/}{celebscan}
+% 	\item \href{https://blog.biolab.si/2016/11/25/celebrity-lookalike-or-how-to-make-students-love-machine-learning/}{celebrity lookalike}
+% \end{itemize}
 
 \end{document}
 
