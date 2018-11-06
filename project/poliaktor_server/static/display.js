@@ -1,6 +1,3 @@
-/**
- * 
- */
 window.browser = (function () {
   return window.msBrowser ||
     window.browser ||
@@ -47,29 +44,14 @@ window.onload = function(){
         });
 	}
 
-	// video.style.width = video.videoWidth
-    // video.style.height = video.videoHeight
-	// canvas.style.width = 500
-    // canvas.style.height = 500 / video.videoWidth * video.videoHeight
-
 	function drawCanvas(){
 	    let context=canvas.getContext('2d');
 		context.drawImage(video, 0, 0, canvas.width, canvas.height);
 	}
-
-	// setInterval(drawCanvas,30);
-
 	function readCanvas(){
 		let canvasData = canvas.toDataURL();
         socket.emit('image_sink', {data: canvasData})
 	}
-
-    // function main(){
-    // 	drawCanvas();
-    // 	readCanvas();
-    // }
-    //
-    // setInterval(main ,30);
 
 	socket.on('my_response', function(msg) {
                 img.src = "data:image/png;base64," + msg.data;
