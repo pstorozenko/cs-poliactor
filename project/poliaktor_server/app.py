@@ -1,11 +1,11 @@
-from PIL import Image
-import io, base64
-from threading import Lock
-from flask import Flask, render_template, session, request
-from flask_socketio import SocketIO, emit, join_room, leave_room, \
-    close_room, rooms, disconnect
-import matplotlib.pyplot as plt
+import io
+import base64
 import numpy as np
+from PIL import Image
+from threading import Lock
+import matplotlib.pyplot as plt
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
 
 async_mode = None
 
@@ -19,12 +19,16 @@ thread_lock = Lock()
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1])))
+    # image_PIL.show()
     image_np = np.array(image_PIL)
-    plt.imshow(image_np)
-    plt.show()
-    print("no cześć")
-    # imagefile = flask.request.files.get('imagefile', '')
-    # return
+    # plt.imshow(image_np)
+    # plt.show()
+    pil_img = Image.fromarray(image_np)
+    buff = io.BytesIO()
+    pil_img.save(buff, format="PNG")
+    new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+    emit('my_response',
+         {'data': new_image_string})
 
 
 @app.route('/')

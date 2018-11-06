@@ -7,7 +7,7 @@
 }
 
 video, canvas, img{
-	width: 400px;
-	height: 400px;
+	/*width: 640px;*/
+	/*height: 480px;*/
 	background-color: #000;
 }

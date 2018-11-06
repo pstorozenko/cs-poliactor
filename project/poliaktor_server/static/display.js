@@ -1,26 +1,46 @@
 /**
  * 
  */
+window.browser = (function () {
+  return window.msBrowser ||
+    window.browser ||
+    window.chrome;
+})();
+
 window.onload = function(){
 	var video = document.querySelector('#videoElement');
 	var canvas = document.querySelector('#canvasElement');
-	// var img = document.querySelector('img');
-	var context=canvas.getContext('2d');
+	var img = document.querySelector('img');
 
 	namespace = '/test';
 
 	var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
     var constraints={
-			video:true,
+			video:
+                {
+                    width: 640,
+                    height: 480
+                },
 			audio:false
 	};
-
 
 	if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(constraints)
         .then(function(stream) {
             video.srcObject = stream;
+            video.play();
+            setTimeout(function () {
+                let dw = video.videoWidth + 'px';
+                let dh = video.videoHeight + 'px';
+                canvas.setAttribute('width', dw);
+                canvas.setAttribute('height', dh);
+                img.setAttribute('width', dw);
+                img.setAttribute('height', dh);
+                setInterval(drawCanvas, 25);
+                // setInterval(readCanvas, 250);
+                readCanvas();
+            }, 1000);
         })
         .catch(function(err0r) {
             console.log("Something went wrong!");
@@ -29,59 +49,30 @@ window.onload = function(){
 
 	// video.style.width = video.videoWidth
     // video.style.height = video.videoHeight
-	canvas.style.width = 500
-    canvas.style.height = 500 / video.videoWidth * video.videoHeight
-
-	// setInterval(drawCanvas,30);
+	// canvas.style.width = 500
+    // canvas.style.height = 500 / video.videoWidth * video.videoHeight
 
 	function drawCanvas(){
+	    let context=canvas.getContext('2d');
 		context.drawImage(video, 0, 0, canvas.width, canvas.height);
 	}
 
+	// setInterval(drawCanvas,30);
+
 	function readCanvas(){
-		var canvasData = canvas.toDataURL();
-		// var decodeAstring = atob(canvasData.split(',')[1]);
-        //
-		// var charArray =[];
-        //
-		// for(var i=0; i<decodeAstring.length;i++){
-        //
-		// 	charArray.push(decodeAstring.charCodeAt(i));
-		// }
-
-		// socket.emit('image_sink', {data: new Blob([new Uint8Array(charArray)])})
-
+		let canvasData = canvas.toDataURL();
         socket.emit('image_sink', {data: canvasData})
-       // socket.send( new Blob([new Uint8Array(charArray)],{
-    	//    tpye:'image/jpeg'
-       // }));
-       //
-       //  socket.addEventListener('message',function(event){
-       //  	img.src=window.URL.createObjectURL(event.data);
-       //  });
-
 	}
 
-    function main(){
-    	drawCanvas();
-    	readCanvas();
-    }
-
-    setInterval(main ,30);
-	
-	// console.log(canvas.toDataURL('image/jpeg',1));
-
-    // function readCanvas(){
-	// 	var dataURL = canvas.toDataURL();
-	// 	$.ajax({
-    //           type: "POST",
-    //           url: url,
-    //           data:{
-    //             imageBase64: dataURL
-    //           }
-    //         }).done(function() {
-    //           console.log('sent');
-    //         });
+    // function main(){
+    // 	drawCanvas();
+    // 	readCanvas();
+    // }
     //
-	// }
+    // setInterval(main ,30);
+
+	socket.on('my_response', function(msg) {
+                img.src = "data:image/png;base64," + msg.data;
+                readCanvas();
+            });
 };
