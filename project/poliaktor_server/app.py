@@ -5,7 +5,7 @@ import base64
 import numpy as np
 from PIL import Image
 from threading import Lock
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
@@ -39,4 +39,4 @@ def index():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, host='0.0.0.0')
