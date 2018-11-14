@@ -6,8 +6,11 @@ window.browser = (function () {
 
 window.onload = function(){
 	var video = document.querySelector('#videoElement');
-	var canvas = document.querySelector('#canvasElement');
 	var img = document.querySelector('img');
+    var c=document.getElementById("canvasElement");
+    var ctx=c.getContext("2d");
+
+	var bbox = null;
 
 	namespace = '/test';
 
@@ -34,8 +37,7 @@ window.onload = function(){
                 canvas.setAttribute('height', dh);
                 img.setAttribute('width', dw);
                 img.setAttribute('height', dh);
-                setInterval(drawCanvas, 25);
-                // setInterval(readCanvas, 250);
+                setInterval(drawCanvas, 100);
                 readCanvas();
             }, 1000);
         })
@@ -45,8 +47,10 @@ window.onload = function(){
 	}
 
 	function drawCanvas(){
-	    let context=canvas.getContext('2d');
-		context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+	    if (bbox) {
+	        ctx.strokeRect(bbox.x, bbox.y, bbox.wdth, bbox.hght);
+        }
 	}
 	function readCanvas(){
 		let canvasData = canvas.toDataURL();
@@ -55,6 +59,7 @@ window.onload = function(){
 
 	socket.on('my_response', function(msg) {
                 img.src = "data:image/png;base64," + msg.data;
+                bbox = msg.coord;
                 readCanvas();
             });
 };
