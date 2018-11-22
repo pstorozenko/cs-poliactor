@@ -7,8 +7,8 @@ window.browser = (function () {
 window.onload = function(){
 	var video = document.querySelector('#videoElement');
 	var img = document.querySelector('img');
-    var c=document.getElementById("canvasElement");
-    var ctx=c.getContext("2d");
+    var canvas=document.getElementById("canvasElement");
+    var ctx=canvas.getContext("2d");
 
 	var bbox = null;
 
