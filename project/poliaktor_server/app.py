@@ -26,6 +26,7 @@ facer = FacerKnn('resources/knn_model.clf', 'resources/encodings.npy', 'resource
 
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
+    average = message['average']
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1]))).convert('RGB')
     image_np = np.array(image_PIL)
 

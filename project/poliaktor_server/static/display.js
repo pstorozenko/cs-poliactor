@@ -7,15 +7,13 @@ window.browser = (function () {
 window.onload = function(){
 	var video = document.querySelector('#videoElement');
 	var img = document.querySelector('img');
-    var c=document.getElementById("canvasElement");
-    var ctx=c.getContext("2d");
-
-	var bbox = null;
-
-	namespace = '/test';
-
+    var canvas=document.getElementById("canvasElement");
+    var ctx=canvas.getContext("2d");
+    var button = document.getElementById("dev_button");
+    var average = false;
+    var bbox = null;
+	var namespace = '/test';
 	var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-
     var constraints={
 			video:
                 {
@@ -24,6 +22,10 @@ window.onload = function(){
                 },
 			audio:false
 	};
+
+    button.onclick = function () {
+        average = !average;
+    }
 
 	if (navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia(constraints)
@@ -54,12 +56,15 @@ window.onload = function(){
 	}
 	function readCanvas(){
 		let canvasData = canvas.toDataURL();
-        socket.emit('image_sink', {data: canvasData})
+        socket.emit('image_sink', {
+            data: canvasData,
+            average: average
+        })
 	}
 
 	socket.on('my_response', function(msg) {
-                img.src = "data:image/png;base64," + msg.data;
-                bbox = msg.coord;
-                readCanvas();
-            });
+	    img.src = "data:image/png;base64," + msg.data;
+	    bbox = msg.coord;
+	    readCanvas();
+	});
 };
