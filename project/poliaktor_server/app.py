@@ -11,6 +11,8 @@ from flask_socketio import SocketIO, emit
 from FacerKnn import FacerKnn
 # import time
 
+TEST_IMAGE_PATH = 'resources/test_photo.jpg'
+
 async_mode = None
 
 app = Flask(__name__)
@@ -25,20 +27,26 @@ facer = FacerKnn('resources/knn_model.clf', 'resources/encodings.npy', 'resource
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1]))).convert('RGB')
-    # print(type(image_PIL))
-    # image_PIL.show()
     image_np = np.array(image_PIL)
-    # start_time = time.time()
-    print(facer.find_nearest(image_np))
-    # print("--- %s seconds ---" % (time.time() - start_time))
+
+    # image_PIL.show()
     # plt.imshow(image_np)
     # plt.show()
-    pil_img = Image.fromarray(image_np)
-    buff = io.BytesIO()
-    pil_img.save(buff, format="PNG")
-    new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+    # pil_img = Image.fromarray(image_np)
+    # buff = io.BytesIO()
+    # pil_img.save(buff, format="PNG")
+    # image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+
+    # start_time = time.time()
+    who, path, coord = facer.find_nearest(image_np)
+    print(who)
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
+    with open(TEST_IMAGE_PATH, "rb") as image_file:
+        image_string = base64.b64encode(image_file.read()).decode("utf-8")
     emit('my_response',
-         {'data': new_image_string})
+         {'data': image_string,
+          'coord': coord})
 
 
 @app.route('/')
