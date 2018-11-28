@@ -1,8 +1,19 @@
 version: '2'
 services:
-  aci_server:
-    image: aci:compose_guni
+  poliactor_server:
+    image: wb:just_server
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_ENV: development
+      FLASK_APP: __init__.py
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+
     ports:
-     - "5000:5000"
+      - "5000:5000"
     volumes:
-     - ./app:/app
+      - ./project/poliaktor_server:/app
+    # entrypoint:
+    #   - flask
+    #   - run
+    #   - --host=0.0.0.0
