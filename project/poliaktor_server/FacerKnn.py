@@ -18,19 +18,32 @@ class FacerKnn:
             file_base = os.path.basename(photo)
             end = file_base.find('_')
             self.names[file_base[:end]].append((encodings[i], photo))
+        self.face_bank = None
+        self.counter = 0
         print("FacerKnn initiated")
 
-    def find_nearest(self, candidate_photo):
+    def get_average(self, vector, stride):
+        if self.face_bank is None:
+            self.face_bank = vector.reshape(1, -1)
+        else:
+            self.face_bank = np.insert(self.face_bank, 0, vector, axis=0)
+            if stride < self.face_bank.shape[0]:
+                self.face_bank = self.face_bank[:stride, :]
+
+        return [self.face_bank.mean(axis=0)]
+
+    def find_nearest(self, candidate_photo, stride):
         res = path = loc = None
         enc = fr.face_encodings(candidate_photo)
         if len(enc) == 1:
             loc = fr.face_locations(candidate_photo)[0]
-            res = self.knn_clf.predict(enc)
+            avg_enc = self.get_average(enc[0], stride)
+            res = self.knn_clf.predict(avg_enc)
             actor_photos = self.names.get(res[0])
             min_d = 100
             path = None
             for photo in actor_photos:
-                dist = fr.face_distance(enc, photo[0])
+                dist = fr.face_distance(avg_enc, photo[0])
                 if dist < min_d:
                     min_d = dist
                     path = photo[1]
