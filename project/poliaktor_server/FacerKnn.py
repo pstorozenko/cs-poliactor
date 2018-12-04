@@ -4,20 +4,20 @@ import face_recognition as fr
 import pickle
 import os
 from collections import defaultdict
+import pandas as pd
 
 
 class FacerKnn:
 
-    def __init__(self, model_path, encodings_path, photos_path):
+    def __init__(self, model_path, data_path):
         with open(model_path, 'rb') as f:
             self.knn_clf = pickle.load(f)
-        encodings = np.load(encodings_path)
-        photos = json.load(open(photos_path))
+        df = pd.read_pickle(data_path)
+
         self.names = defaultdict(list)
-        for i, photo in enumerate(photos):
-            file_base = os.path.basename(photo)
-            end = file_base.find('_')
-            self.names[file_base[:end]].append((encodings[i], photo))
+        for index, row in df.iterrows():
+            enc = np.asarray(row.iloc[2:])
+            self.names[row['actor']].append((enc, row['photo']))
         self.face_bank = None
         self.counter = 0
         print("FacerKnn initiated")

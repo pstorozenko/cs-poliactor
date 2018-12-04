@@ -18,7 +18,7 @@ async_mode = None
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
-facer = FacerKnn('resources/knn_model.clf', 'resources/encodings.npy', 'resources/faces_names.json')
+facer = FacerKnn('resources/knn_model.clf', 'resources/actors_photos_encodings.pkl')
 
 
 @socketio.on('image_sink', namespace='/test')
