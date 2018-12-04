@@ -21,7 +21,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 thread = None
 thread_lock = Lock()
 # facer = Facer('resources/encodings.npy', 'resources/faces_names.json')
-facer = FacerKnn('resources/knn_model.clf', 'resources/encodings.npy', 'resources/faces_names.json')
+facer = FacerKnn('resources/knn_model.clf', 'resources/actors_photos_encodings.pkl')
 
 
 @socketio.on('image_sink', namespace='/test')
