@@ -8,8 +8,8 @@ from sklearn.decomposition import PCA
 
 from utils.face_functions import face_to_vec
 
-IMG_PATH = '../../images2/'
-TEST_IMG_PATH = '../../test_photos/'
+IMG_PATH = '/home/stelmchd/Coding/repos/cs-poliactor/project/images2/'
+TEST_IMG_PATH = '/home/stelmchd/Coding/repos/cs-poliactor/project/test_photos/'
 TEST_DF_FILE = 'test_faces_df.pkl'
 DF_FILE = 'faces_df.pkl'
 
@@ -18,7 +18,7 @@ if os.path.exists(DF_FILE):
 else:
     photo_files = os.listdir(IMG_PATH)
     people_df = pd.DataFrame({"files": photo_files})
-    people_df["person"] = people_df.files.str.slice(0, -6).astype('catogory')
+    people_df["person"] = people_df.files.str.slice(0, -6).astype('category')
     people_df.set_index('person', inplace=True)
     people_df['code'] = people_df.files.apply(lambda img: face_to_vec(os.path.join(IMG_PATH, img)))
     codes = pd.DataFrame(np.vstack(people_df.code.values), index=people_df.index).add_prefix('v_')
@@ -70,13 +70,15 @@ full_pca = pd.concat([top_pca, webcam_pca])
 
 # fig
 
-sns.set(rc={'figure.figsize':(20,15)})
+fig = plt.figure()
 ax = sns.scatterplot(data=top_pca, x='pca_0', y='pca_1', hue='person', s=100)
 box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-plt.ion()
+sns.set(rc={'figure.figsize':(20,15)})
+plt.show()
 
 for i in range(10):
     plt.scatter(webcam_pca.iloc[i, 1], webcam_pca.iloc[i, 2], s=200, marker='^')
+    fig.draw()
     plt.pause(0.5)
