@@ -5,15 +5,19 @@ window.browser = (function () {
 })();
 
 window.onload = function(){
-	var video = document.querySelector('#videoElement');
-	var img = document.querySelector('img');
+	var video = document.querySelector("#videoElement");
+	var actor = document.getElementById("actor-img");
+    var plot = document.getElementById("plot-img");
     var canvas=document.getElementById("canvasElement");
     var ctx=canvas.getContext("2d");
     var button = document.getElementById("dev_button");
     var input = document.getElementById("dev_input");
+    var actor_name = document.getElementById("actor-name");
+
     var average = false;
     var frames = 1;
     var bbox = null;
+
 	var namespace = '/test';
 	var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
     var constraints={
@@ -41,12 +45,16 @@ window.onload = function(){
             video.srcObject = stream;
             video.play();
             setTimeout(function () {
-                let dw = video.videoWidth + 'px';
-                let dh = video.videoHeight + 'px';
+                let dw = video.videoWidth;
+                let dh = video.videoHeight;
                 canvas.setAttribute('width', dw);
                 canvas.setAttribute('height', dh);
-                img.setAttribute('width', dw);
-                img.setAttribute('height', dh);
+                actor.setAttribute('width', dw);
+                actor.setAttribute('height', dh);
+                // actor.setAttribute('width', '100%');
+                // actor.setAttribute('height', 'auto');
+                // plot.setAttribute('width', '100%');
+                // plot.setAttribute('height', 'auto');
                 setInterval(drawCanvas, 100);
                 readCanvas();
             }, 1000);
@@ -73,7 +81,10 @@ window.onload = function(){
 	}
 
 	socket.on('my_response', function(msg) {
-	    img.src = "data:image/png;base64," + msg.data;
+	    actor_name.innerHTML = msg.actor;
+	    actor.src = "data:image/png;base64," + msg.image;
+	    plot.src = "data:image/png;base64," + msg.plot;
+
 	    bbox = msg.coord;
 	    readCanvas();
 	});

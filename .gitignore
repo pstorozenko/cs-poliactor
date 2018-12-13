@@ -2,9 +2,11 @@
 .idea/
 __pycache__/
 .ipynb_checkpoints/
+.vscode
 
 images/
 images2/
+test_photos/
 
 ## Core latex/pdflatex auxiliary files:
 documentation/*.aux
