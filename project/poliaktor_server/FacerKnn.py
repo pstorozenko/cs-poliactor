@@ -4,6 +4,7 @@ import face_recognition as fr
 import pickle
 import os
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 from collections import defaultdict
 import pandas as pd
 
