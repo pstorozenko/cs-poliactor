@@ -9,24 +9,19 @@
     <title>I know ya face</title>
 </head>
     <body>
+    <video id="videoElement"></video>
     <div id="outer-div">
         <div id="inner-div" class="wrapper">
-            <div style="display: none;">
-                <h1>Video from webCam</h1>
-                <video id="videoElement"></video>
+            <div id="control-div" class="vertical">
+                <button id="dev_button" value="false" type="button">Reset</button>
+                <input id="dev_input" type="number" name="points" value="15" step="1">
+                <p id="actor-name"></p>
             </div>
-            <div>
-                <h1>Video on Canvas</h1>
-                <canvas id="canvasElement"></canvas>
-            </div>
-            <div>
-                <h1> Video from Server</h1>
-                <img alt="" />
-            </div>
+            <canvas id="canvasElement" class="vertical"></canvas>
+            <img id="actor-img" class="vertical" alt="" />
         </div>
-        <div>
-            <button id="dev_button" value="false" type="button">Start/Stop</button>
-            <input id="dev_input" type="number" name="points" value="1" step="1">
+        <div id="img-div">
+            <img id="plot-img" alt="" />
         </div>
     </div>
     </body>
