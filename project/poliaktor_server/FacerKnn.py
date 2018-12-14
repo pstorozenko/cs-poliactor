@@ -1,13 +1,14 @@
 import numpy as np
-import json
 import face_recognition as fr
 import pickle
-import os
 from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 from collections import defaultdict
 import pandas as pd
-
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.lines import Line2D
 
 class FacerKnn:
 
@@ -33,6 +34,10 @@ class FacerKnn:
             self.names[index].append((enc, row['photo']))
         self.face_bank = None
         self.counter = 0
+        self.fig = None
+        self.reset_plot()
+        self.reset_limit = 15
+        self.reset_counter = 0
         print("FacerKnn initiated")
 
     def get_base_pca(self):
@@ -71,4 +76,34 @@ class FacerKnn:
                    'wdth': loc[2] - loc[0],
                    'hght': loc[3] - loc[1]}
 
+        if res is None:
+            self.reset_counter += 1
+
+        print(self.reset_counter)
         return res, path, loc, coord_pca
+
+    def reset_plot(self):
+        self.face_bank = None
+        plt.clf()
+        sns.set(rc={'figure.figsize': (20, 20)})
+        self.fig = plt.figure()
+        faces = self.get_base_pca()
+        ax = sns.scatterplot(data=faces, x='pca_0', y='pca_1', s=1, color='black')
+        for i, text in enumerate(faces.init.values):
+            plt.text(faces.pca_0[i], faces.pca_1[i], text, fontsize=11)
+
+        plt.legend(['Foo', 'bar'])
+        legend_elements = [Line2D([0], [0], marker='X', color='r', label='Found faces coordinates', markersize=16),
+                           Line2D([0], [0], marker='$AB$', color='k', label='Actors faces', markersize=16)]
+
+        plt.legend(handles=legend_elements, loc='upper left', fontsize='xx-large')
+
+    def get_plot(self, x, y):
+        if self.reset_counter >= self.reset_limit:
+            print("reseting plot")
+            self.reset_plot()
+        self.reset_counter = 0
+
+        plt.scatter(x, y, s=200, marker='x', color='red')
+        plt.draw()
+        return self.fig

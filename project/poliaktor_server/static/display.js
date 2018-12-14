@@ -29,10 +29,6 @@ window.onload = function(){
 			audio:false
 	};
 
-    button.onclick = function () {
-        average = !average;
-    }
-
     input.onchange = function () {
         if(input.value < 1)
             input.value = 1;
@@ -45,16 +41,12 @@ window.onload = function(){
             video.srcObject = stream;
             video.play();
             setTimeout(function () {
-                let dw = video.videoWidth;
-                let dh = video.videoHeight;
+                let dw = 0.8 * video.videoWidth;
+                let dh = 0.8 * video.videoHeight;
                 canvas.setAttribute('width', dw);
                 canvas.setAttribute('height', dh);
                 actor.setAttribute('width', dw);
                 actor.setAttribute('height', dh);
-                // actor.setAttribute('width', '100%');
-                // actor.setAttribute('height', 'auto');
-                // plot.setAttribute('width', '100%');
-                // plot.setAttribute('height', 'auto');
                 setInterval(drawCanvas, 100);
                 readCanvas();
             }, 1000);
@@ -75,10 +67,15 @@ window.onload = function(){
 		let canvasData = canvas.toDataURL();
         socket.emit('image_sink', {
             data: canvasData,
-            average: average,
             frames: frames
         })
 	}
+
+	button.onclick = function () {
+        socket.emit('reset_plot', {
+            reset: true
+        })
+    };
 
 	socket.on('my_response', function(msg) {
 	    actor_name.innerHTML = msg.actor;

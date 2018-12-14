@@ -23,13 +23,22 @@
 }
 
 #plot-img{
-	width: 100%;
+	width: 80%;
 	height: auto;
 }
 
-#canvasElement{
-	width: 50%;
+#control-div{
+	display: inline-flex;
 }
+
+/*#canvasElement{*/
+	/*width: 80%;*/
+/*}*/
+
+/*#actor-img{*/
+	/*width: 80%;*/
+	/*height: 80%;*/
+/*}*/
 
 /*#actor-img{*/
 	/*flex-basis: 50%;*/
