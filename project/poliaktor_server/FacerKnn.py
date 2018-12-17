@@ -85,7 +85,7 @@ class FacerKnn:
     def reset_plot(self):
         self.face_bank = None
         plt.clf()
-        sns.set(rc={'figure.figsize': (20, 20)})
+        sns.set(rc={'figure.figsize': (13, 13)})
         self.fig = plt.figure()
         faces = self.get_base_pca()
         ax = sns.scatterplot(data=faces, x='pca_0', y='pca_1', s=1, color='black')

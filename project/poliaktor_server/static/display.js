@@ -5,7 +5,7 @@ window.browser = (function () {
 })();
 
 window.onload = function(){
-	var video = document.querySelector("#videoElement");
+	var video = document.getElementById("videoElement");
 	var actor = document.getElementById("actor-img");
     var plot = document.getElementById("plot-img");
     var canvas=document.getElementById("canvasElement");
@@ -59,6 +59,7 @@ window.onload = function(){
 	function drawCanvas(){
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 	    if (bbox) {
+	        ctx.strokeStyle = "#FF0000";
 	        ctx.strokeRect(bbox.x, bbox.y, bbox.wdth, bbox.hght);
         }
 	}
