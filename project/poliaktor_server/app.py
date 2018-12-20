@@ -27,11 +27,12 @@ facer = FacerKnn('resources/knn_model.clf', 'resources/actors_photos_encodings.p
 sns.set(rc={'figure.figsize': (20, 20)})
 fig = plt.figure()
 faces = facer.get_base_pca()
-ax = sns.scatterplot(data=faces, x='pca_0', y='pca_1', s=1, color='black')
+ax = sns.scatterplot(data=faces, x='pca_0', y='pca_1', s=150, hue='actor')
+plt.legend(bbox_to_anchor=(0.95, 1), loc=2, borderaxespad=0.2)
 for i, text in enumerate(faces.init.values):
     # if faces.iloc[i, 3] > 0.3:
     #     print(faces.iloc[i, 1])
-    plt.text(faces.pca_0[i], faces.pca_1[i], text, fontsize=11)
+    plt.text(faces.pca_0[i], faces.pca_1[i], text, fontsize=12)
 # ax.xaxis.label.set_visible(False)
 # ax.yaxis.label.set_visible(False)
 # box = ax.get_position()
@@ -55,14 +56,13 @@ def get_image(message):
         with open(path, "rb") as image_file:
             image_string = base64.b64encode(image_file.read()).decode("utf-8")
         plt.scatter(pca[0], pca[1], s=200, marker='x', color='red')
-        plt.legend(['Foo', 'bar'])
-        legend_elements = [Line2D([0], [0], marker='X', color='r', label='Found faces coordinates', markersize=16),
-                           Line2D([0], [0], marker='$AB$', color='k', label='Actors faces', markersize=16)]
+        #  print(pca)
+        #  plt.legend(['Foo', 'bar'])
+        #  legend_elements = [Line2D([0], [0], marker='X', color='r', label='Found faces coordinates', markersize=16),
+        #                  Line2D([0], [0], marker='$AB$', color='k', label='Actors faces', markersize=16)]
 
-        plt.legend(handles=legend_elements, loc='upper left', fontsize='xx-large')
+        #  plt.legend(handles=legend_elements, loc='upper left', fontsize='xx-large')
 
-        plt.xlabel("PCA1")
-        plt.ylabel("PCA2")
         plt.draw()
         canvas = FigureCanvasAgg(fig)
         png_output = io.BytesIO()
@@ -74,6 +74,7 @@ def get_image(message):
         blank_img.save(buff, format="PNG")
         image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
         plot_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+
         who = [" "]
 
     emit('my_response',
