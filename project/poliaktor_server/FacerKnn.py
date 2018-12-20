@@ -1,12 +1,14 @@
 import numpy as np
-import json
 import face_recognition as fr
 import pickle
-import os
 from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 from collections import defaultdict
 import pandas as pd
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.lines import Line2D
 
 
 class FacerKnn:
@@ -33,6 +35,10 @@ class FacerKnn:
             self.names[index].append((enc, row['photo']))
         self.face_bank = None
         self.counter = 0
+        self.fig = None
+        self.reset_plot()
+        self.reset_limit = 15
+        self.reset_counter = 0
         print("FacerKnn initiated")
 
     def get_base_pca(self):
@@ -49,7 +55,8 @@ class FacerKnn:
         return [self.face_bank.mean(axis=0)]
 
     def find_nearest(self, candidate_photo, stride):
-        res = path = loc = coord_pca = None
+        res = path = loc = None
+        coord_pca = [None, None]
         enc = fr.face_encodings(candidate_photo)
         if len(enc) == 1:
             loc = fr.face_locations(candidate_photo)[0]
@@ -71,4 +78,46 @@ class FacerKnn:
                    'wdth': loc[2] - loc[0],
                    'hght': loc[3] - loc[1]}
 
+        if res is None:
+            self.reset_counter += 1
+
+        print(self.reset_counter)
         return res, path, loc, coord_pca
+
+    def reset_plot(self):
+        self.face_bank = None
+        plt.clf()
+        sns.set(rc={'figure.figsize': (13, 13)})
+        self.fig = plt.figure()
+        faces = self.get_base_pca()
+        ax = sns.scatterplot(data=faces, x='pca_0', y='pca_1', s=1, color='black')
+        ax.xaxis.label.set_visible(False)
+        ax.yaxis.label.set_visible(False)
+
+        used = set()
+        plt.legend(['Foo', 'bar'])
+        legend_elements = []
+        for i, (init, name, pca0, pca1) in pd.DataFrame.iterrows(faces):
+            plt.text(pca0, pca1, init, fontsize=12)
+            if init not in used:
+                used.add(init)
+                legend_elements.append(
+                    Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=12))
+
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0, box.width * 0.9, box.height * 0.9])
+        plt.legend(handles=legend_elements, loc='center left', fontsize=11, bbox_to_anchor=(1, 0.5))
+
+
+    def get_plot(self, x=None, y=None):
+        if self.reset_counter >= self.reset_limit:
+            print("reseting plot")
+            self.reset_plot()
+
+        self.reset_counter = 0
+
+        if x is not None and y is not None:
+            plt.scatter(x, y, s=200, marker='x', color='red')
+            plt.draw()
+
+        return self.fig
