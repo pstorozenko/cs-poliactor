@@ -76,9 +76,9 @@ box = ax.get_position()
 ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 sns.set(rc={'figure.figsize':(20,15)})
-plt.show()
+plt.show(block=False)
 
 for i in range(10):
-    plt.scatter(webcam_pca.iloc[i, 1], webcam_pca.iloc[i, 2], s=200, marker='^')
+    plt.scatter(webcam_pca.iloc[i, 1], webcam_pca.iloc[i, 2], s=200, marker='^', color='red')
     fig.draw()
     plt.pause(0.5)
