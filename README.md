@@ -1,8 +1,6 @@
-# Description
+# Your face seems famous!
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you! 
-
-Blah blah blah
 
 # Features
 
@@ -41,7 +39,21 @@ Server is responsible for:
  - updates plot with newly computed data
  - sends back resulting data
 
-For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. All info about methods and models used are described in the following [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
+For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. Here we add a brief description of what is going on under the hood but for more (first hand) information about methods and models take a look at this [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
+
+1. Face detection
+   - convert picture to grayscale
+   - compute HOG ([Histogram of Oriented Gradients](https://lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf)) on the 16x16 grid
+   - find HOG face pattern
+2. Posing and Projecting Faces
+   - compute 68 face [landmark points](http://www.csc.kth.se/~vahidk/papers/KazemiCVPR14.pdf)
+   - find affine transformations to align photo to perfectly centered face pattern
+3. Faces encoding
+   -  train an Siamese Neural Network with triplet loss (a lot of data and time needed) or simply use an [OpenFace](https://cmusatyalab.github.io/openface/) library
+   -  encode your faces from your database using this network
+4. Finding the most similar face
+   - train any classifier to classify faces from your database
+   - classify new images
 
 Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm.
 
