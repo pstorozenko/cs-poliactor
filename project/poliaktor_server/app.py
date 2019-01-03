@@ -54,7 +54,7 @@ def get_image(message):
 
     emit('my_response',
          {
-             'actor': who[0],
+             'actor': who,
              'image': image_string,
              'plot': plot_string,
              'coord': coord
