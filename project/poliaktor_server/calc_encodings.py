@@ -2,9 +2,7 @@ import face_recognition as fr
 import numpy as np
 import glob
 from PIL import Image
-import json
 import pandas as pd
-import os
 
 
 photos = glob.glob('images/*/*')
