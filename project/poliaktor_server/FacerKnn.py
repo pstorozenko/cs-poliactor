@@ -8,8 +8,6 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from sklearn.decomposition import PCA
 from collections import defaultdict
-from math import floor
-from sklearn.manifold import TSNE
 
 
 class FacerKnn:
@@ -105,11 +103,18 @@ class FacerKnn:
         self.display_bank = None
         self.found_actors = pd.DataFrame(columns=self.colnames)
         plt.clf()
-        self.fig, self.axarr = plt.subplots(2, figsize=(13, 26))
+        self.fig, self.axarr = plt.subplots(2, figsize=(13, 23))
         faces = self.get_base_pca()
         self.axarr[1].scatter(x=faces.pca_0, y=faces.pca_1, s=1, c='black')
         self.axarr[1].xaxis.label.set_visible(False)
         self.axarr[1].yaxis.label.set_visible(False)
+        for ax in self.axarr:
+            ax.tick_params(axis='both',          # changes apply to the x-axis
+                                  which='both',      # both major and minor ticks are affected
+                                  labelbottom=False,
+                                  labeltop=False,
+                                  labelleft=False,
+                                  labelright=False)  # labels along the bottom edge are off)
 
         used = set()
         legend_elements = []
@@ -124,15 +129,16 @@ class FacerKnn:
             box = arr.get_position()
             arr.set_position([box.x0, box.y0, box.width * 0.9, box.height * 0.9])
         self.axarr[1].legend(handles=legend_elements, loc='center left', fontsize=11, bbox_to_anchor=(1, 0.5))
+        plt.tight_layout()
+        plt.subplots_adjust(wspace=0, hspace=0)
 
     def get_plot(self, x=None, y=None):
         if self.reset_counter >= self.reset_limit:
             print("reseting plot")
             self.reset_plot()
-
-        self.reset_counter = 0
-
-        if x is not None and y is not None:
+            self.reset_counter = 0
+        elif x is not None and y is not None:
+            self.reset_counter = 0
             self.axarr[1].scatter(x, y, s=200, marker='x', color='red')
 
             if self.display_bank.shape[0] > 2:
@@ -151,6 +157,7 @@ class FacerKnn:
                             Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=12))
 
                 self.axarr[0].legend(handles=legend_elements, loc='center left', fontsize=11, bbox_to_anchor=(1, 0.5))
+                plt.savefig('example.png')
 
             plt.draw()
 
@@ -161,7 +168,8 @@ class FacerKnn:
         # embedding = umap.UMAP(n_neighbors=min(floor(whole_data.shape[0]/2), 5),
         #                       min_dist=0.3,
         #                       metric='correlation').fit_transform(whole_data)
-        embedding = TSNE(n_components=2).fit_transform(whole_data)
+        # embedding = TSNE(n_components=2).fit_transform(whole_data)
+        embedding = PCA(n_components=2).fit_transform(whole_data)
 
         faces = np.array(embedding[:self.display_bank.shape[0], :])
         actors = pd.DataFrame(embedding[self.display_bank.shape[0]:, :], columns=['v1', 'v2'])

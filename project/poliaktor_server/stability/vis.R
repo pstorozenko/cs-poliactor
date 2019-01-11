@@ -34,6 +34,9 @@ data2 %>% ggplot(aes(x = Person, y = diff)) +
 
 data2 %>% group_by(Person) %>% summarise(mean(diff > 0))
 
+data2 %>% select(x,y) %>% gather() %>% ggplot(aes(value, colour = key)) + geom_density()
+
 data2 %>% ggplot(aes(x = x, y = y , colour = Person)) +
     geom_point() +
     theme_minimal()
+
