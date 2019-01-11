@@ -10,7 +10,7 @@ services:
       LANG: C.UTF-8
 
     ports:
-      - "5000:5000"
+      - "6113:6113"
     volumes:
       - ../project/poliaktor_server:/app
     # entrypoint:

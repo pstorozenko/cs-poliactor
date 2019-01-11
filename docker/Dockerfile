@@ -31,7 +31,7 @@ RUN apt-get install -y --fix-missing \
 
 RUN cd ~ && \
     mkdir -p dlib && \
-    git clone -b 'v19.9' --single-branch https://github.com/davisking/dlib.git dlib/ && \
+    git clone --single-branch https://github.com/davisking/dlib.git dlib/ && \
     cd  dlib/ && \
     mkdir build && \
     cd build && \
@@ -45,7 +45,7 @@ COPY reqs.txt .
 RUN pip3 install -r reqs.txt
 
 # Expose port for connection
-EXPOSE 5000
+EXPOSE 6113
 
 # Add requirements.txt
 RUN mkdir /app
