@@ -2,25 +2,43 @@
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
 
-> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie> // Pasza
-
-# Features
-
-> chyba można pominąć wstęp, że jeżeli pozwolimy
-
-If you allow our web-app to access your webcam it detects your face, finds the most similar photo and actor name from predefined database and shows a 2D plot of PCA coordinates extracted from encoded face.
+> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie> // Pasz
 
 # Installation
 
-The app can be run locally on your own machine. All required packages are listed in `reqs.txt` file. Though we recommend running it inside the Docker container. `Dockerfile` as well as `docker-compose` files can be found in the `docker` directory. For more details visit [Docker documentation](https://docs.docker.com/get-started/)
+The app can be run locally on your own machine. Due to `face_recognition` package requirements macOS and Linux machines are supported.
 
-By default app is available under `http://localhost:5000`
+Local requirements:
+
+- Python >= 3.6
+- [dlib](http://dlib.net/)
+- numpy==1.15
+- pandas==0.23.4
+- Flask==1.0.2
+- Flask-SocketIO==3.0.2
+- Pillow==5.3.0
+- eventlet==0.24.1
+- face_recognition==1.2.3
+- matplotlib==3.0.2
+- scikit-learn==0.20.0
+
+All needed Python packages are listed in `reqs.txt` file.
+
+Since `dlib` and `face_recognition` [installation](https://github.com/ageitgey/face_recognition#installation) can be problematic in some cases, we highly recommend using Docker containers. `Dockerfile` as well as `docker-compose` files can be found in the `docker` directory.
+
+To run application via Docker go to the `Docker` directory and run in the console:
+
+```docker-compose up```
+
+For more details visit [Docker documentation](https://docs.docker.com/get-started/)
+
+By default app is available under `http://localhost:6113`
 
 # Usage
 
 > dodać tutaj screena z naszej apki podpisanego ,,tutaj to'' ,,tutaj śmo'' ,,tutaj blah''
 
-After reaching proper URL, popup asking for webcam permissions will be displayed. Then all you have to do is wait to see results.
+After reaching proper URL, give the app an permissions to your webcam. Then all you have to do is wait to see results.
 
 On the bottom left webcam stream will be displayed with most similar actor's image and name above it. On the right there will be plot showing position of current embedding of captured face (with respect to the average).
 
@@ -63,7 +81,7 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - train any classifier to classify faces from your database
    - classify new images
 
-Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm with $n = \sqrt(len(training_set))$.
+Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = \sqrt(len(training_set))$.
 
 # Processing methodology
 
@@ -85,8 +103,8 @@ After that we've implemented averaging face embedding, which significantly impro
 
 ## Visualizing the results
 
-The embedding produced by `face_recognition` package is **XXX** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
+The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
 
 One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent)
 
-> coś o TSNE dodać
+> coś o PCA dodać

@@ -1,7 +1,7 @@
 version: '2'
 services:
   poliactor_server:
-    image: wb:poliaktor
+    image: stelmachd/wb:poliaktor
     environment:
       FLASK_DEBUG: 1
       FLASK_ENV: development
