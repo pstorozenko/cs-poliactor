@@ -1,8 +1,12 @@
 # Your face seems famous!
 
-Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you! 
+Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
+
+> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie> // Pasza
 
 # Features
+
+> chyba można pominąć wstęp, że jeżeli pozwolimy
 
 If you allow our web-app to access your webcam it detects your face, finds the most similar photo and actor name from predefined database and shows a 2D plot of PCA coordinates extracted from encoded face.
 
@@ -13,6 +17,8 @@ The app can be run locally on your own machine. All required packages are listed
 By default app is available under `http://localhost:5000`
 
 # Usage
+
+> dodać tutaj screena z naszej apki podpisanego ,,tutaj to'' ,,tutaj śmo'' ,,tutaj blah''
 
 After reaching proper URL, popup asking for webcam permissions will be displayed. Then all you have to do is wait to see results.
 
@@ -30,14 +36,16 @@ Client side is responsible only for capturing frames from webcam stream which is
 
 All computation is done at the server side. Server is written in [Flask](http://flask.pocoo.org/) with help of [Flask-socketIO](https://flask-socketio.readthedocs.io/en/latest/) to allow communication over web sockets.
 
+> zrobić z tego diagramik
+
 Server is responsible for:
 
- - receive photo
- - detects face
- - computes embedding of the face
- - finds the most similar actor
- - updates plot with newly computed data
- - sends back resulting data
+- receiving a photo
+- detecting face
+- computing embedding of the face
+- finding the most similar actor
+- updating plot with newly computed data
+- sending back resulting data
 
 For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. Here we add a brief description of what is going on under the hood but for more (first hand) information about methods and models take a look at this [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
 
@@ -49,13 +57,13 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - compute 68 face [landmark points](http://www.csc.kth.se/~vahidk/papers/KazemiCVPR14.pdf)
    - find affine transformations to align photo to perfectly centered face pattern
 3. Faces encoding
-   -  train an Siamese Neural Network with triplet loss (a lot of data and time needed) or simply use an [OpenFace](https://cmusatyalab.github.io/openface/) library
-   -  encode your faces from your database using this network
+   - train an Siamese Neural Network with triplet loss (a lot of data and time needed) or simply use an [OpenFace](https://cmusatyalab.github.io/openface/) library
+   - encode your faces from your database using this network
 4. Finding the most similar face
    - train any classifier to classify faces from your database
    - classify new images
 
-Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm.
+Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm with $n = \sqrt(len(training_set))$.
 
 # Processing methodology
 
@@ -67,9 +75,9 @@ Feces are compared with precomputed representations of predefined set of **XXX**
 
 ## Stability issues
 
-From the beginning of project stability of responses were the biggest concern. Webcam images usually have poor quality which is highly dependent on light conditions. What is more, photos used in the project are quite diverse even looking at a single actor. 
+From the beginning of project stability of responses were the biggest concern. Webcam images usually have poor quality which is highly dependent on light conditions. What is more, photos used in the project are quite diverse even looking at a single actor.
 
-During first tries, every response shows different person, even when we tried not to move our faces. Due to the fact that KNN algorithm is used to find the most similar actor, we've tried increasing the *k* parameter. Not only it do not boost user experience but also adds unwanted ambiguity because single, the most similar photo was no longer available. 
+During first tries, every response shows different person, even when we tried not to move our faces. Due to the fact that KNN algorithm is used to find the most similar actor, we've tried increasing the *k* parameter. Not only it do not boost user experience but also adds unwanted ambiguity because single, the most similar photo was no longer available.
 
 After that we've implemented averaging face embedding, which significantly improve stability.
 
@@ -80,3 +88,5 @@ After that we've implemented averaging face embedding, which significantly impro
 The embedding produced by `face_recognition` package is **XXX** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
 
 One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent)
+
+> coś o TSNE dodać
