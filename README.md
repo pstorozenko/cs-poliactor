@@ -2,7 +2,7 @@
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
 
-> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie>
+> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie> // Pasza
 
 # Features
 
@@ -36,16 +36,16 @@ Client side is responsible only for capturing frames from webcam stream which is
 
 All computation is done at the server side. Server is written in [Flask](http://flask.pocoo.org/) with help of [Flask-socketIO](https://flask-socketio.readthedocs.io/en/latest/) to allow communication over web sockets.
 
-> uzgodnić czasy poniżej
+> zrobić z tego diagramik
 
 Server is responsible for:
 
-- receive photo
-- detects face
-- computes embedding of the face
-- finds the most similar actor
-- updates plot with newly computed data
-- sends back resulting data
+- receiving a photo
+- detecting face
+- computing embedding of the face
+- finding the most similar actor
+- updating plot with newly computed data
+- sending back resulting data
 
 For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. Here we add a brief description of what is going on under the hood but for more (first hand) information about methods and models take a look at this [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
 
@@ -63,9 +63,7 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - train any classifier to classify faces from your database
    - classify new images
 
-> dodać info dokładniejsze o KNN
-
-Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm.
+Feces are compared with precomputed representations of predefined set of **XXX** images (**YYY** different actors) using KNN algorithm with $n = \sqrt(len(training_set))$.
 
 # Processing methodology
 
