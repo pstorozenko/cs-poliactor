@@ -36,7 +36,7 @@ By default app is available under `http://localhost:6113`
 
 # Usage
 
-> dodać tutaj screena z naszej apki podpisanego ,,tutaj to'' ,,tutaj śmo'' ,,tutaj blah''
+![](app_screan.png)
 
 After reaching proper URL, give the app an permissions to your webcam. Then all you have to do is wait to see results.
 
@@ -54,16 +54,7 @@ Client side is responsible only for capturing frames from webcam stream which is
 
 All computation is done at the server side. Server is written in [Flask](http://flask.pocoo.org/) with help of [Flask-socketIO](https://flask-socketio.readthedocs.io/en/latest/) to allow communication over web sockets.
 
-> zrobić z tego diagramik
-
-Server is responsible for:
-
-- receiving a photo
-- detecting face
-- computing embedding of the face
-- finding the most similar actor
-- updating plot with newly computed data
-- sending back resulting data
+![](diagram.png)
 
 For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. Here we add a brief description of what is going on under the hood but for more (first hand) information about methods and models take a look at this [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
 
@@ -75,13 +66,13 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - compute 68 face [landmark points](http://www.csc.kth.se/~vahidk/papers/KazemiCVPR14.pdf)
    - find affine transformations to align photo to perfectly centered face pattern
 3. Faces encoding
-   - train an Siamese Neural Network with triplet loss (a lot of data and time needed) or simply use an [OpenFace](https://cmusatyalab.github.io/openface/) library
+   - get pretrained neural network e.g. from [OpenFace](https://cmusatyalab.github.io/openface/) library
    - encode your faces from your database using this network
 4. Finding the most similar face
    - train any classifier to classify faces from your database
    - classify new images
 
-Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = \sqrt(len(training_set))$.
+Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = 1$.
 
 # Processing methodology
 
