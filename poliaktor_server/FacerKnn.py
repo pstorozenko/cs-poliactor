@@ -123,12 +123,12 @@ class FacerKnn:
             if init not in used:
                 used.add(init)
                 legend_elements.append(
-                    Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=12))
+                    Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=13))
 
         for arr in self.axarr:
             box = arr.get_position()
-            arr.set_position([box.x0, box.y0, box.width * 0.9, box.height * 0.9])
-        self.axarr[1].legend(handles=legend_elements, loc='center left', fontsize=11, bbox_to_anchor=(1, 0.5))
+            arr.set_position([box.x0, box.y0, box.width * 0.97, box.height * 0.97])
+        self.axarr[1].legend(handles=legend_elements, loc='center left', fontsize=13, bbox_to_anchor=(1, 0.5))
         plt.tight_layout()
         plt.subplots_adjust(wspace=0, hspace=0)
 
@@ -142,7 +142,7 @@ class FacerKnn:
             self.axarr[1].scatter(x, y, s=200, marker='x', color='red')
 
             if self.display_bank.shape[0] > 2:
-                faces, actors = self.compute_tsne()
+                faces, actors = self.compute_pca()
                 self.axarr[0].clear()
                 self.axarr[0].scatter(faces[:, 0], faces[:, 1], s=200, marker='x', color='red')
 
@@ -154,21 +154,17 @@ class FacerKnn:
                     if init not in used:
                         used.add(init)
                         legend_elements.append(
-                            Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=12))
+                            Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=13))
 
-                self.axarr[0].legend(handles=legend_elements, loc='center left', fontsize=11, bbox_to_anchor=(1, 0.5))
+                self.axarr[0].legend(handles=legend_elements, loc='center left', fontsize=13, bbox_to_anchor=(1, 0.5))
                 plt.savefig('example.png')
 
             plt.draw()
 
         return self.fig
 
-    def compute_tsne(self):
+    def compute_pca(self):
         whole_data = np.vstack((self.display_bank, self.found_actors.iloc[:, 2:].values))
-        # embedding = umap.UMAP(n_neighbors=min(floor(whole_data.shape[0]/2), 5),
-        #                       min_dist=0.3,
-        #                       metric='correlation').fit_transform(whole_data)
-        # embedding = TSNE(n_components=2).fit_transform(whole_data)
         embedding = PCA(n_components=2).fit_transform(whole_data)
 
         faces = np.array(embedding[:self.display_bank.shape[0], :])

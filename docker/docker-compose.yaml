@@ -12,8 +12,4 @@ services:
     ports:
       - "6113:6113"
     volumes:
-      - ../project/poliaktor_server:/app
-    # entrypoint:
-    #   - flask
-    #   - run
-    #   - --host=0.0.0.0
+      - ../poliaktor_server:/app

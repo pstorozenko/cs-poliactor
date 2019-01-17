@@ -23,7 +23,7 @@
 }
 
 #plot-img{
-	width: 80%;
+	width: 100%;
 	height: auto;
 }
 
@@ -31,36 +31,15 @@
 	display: inline-flex;
 }
 
-/*#canvasElement{*/
-	/*width: 80%;*/
-/*}*/
-
-/*#actor-img{*/
-	/*width: 80%;*/
-	/*height: 80%;*/
-/*}*/
-
-/*#actor-img{*/
-	/*flex-basis: 50%;*/
-/*}*/
-
-/*#actor-img{*/
-	/*padding-top: 75%;*/
-/*}*/
-
-/*.wrapper{*/
-	/*display: grid;*/
-	/*grid-template-columns:repeat(3,1fr);*/
-	/*grid-gap:5px;*/
-/*}*/
-
-
-
 video, canvas, img{
 	background-color: #000000;
 }
 
 video {
 	display: none;
+}
+
+.picture {
+	width: 448px;
 }
 

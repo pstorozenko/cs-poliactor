@@ -3,10 +3,9 @@
 __pycache__/
 .ipynb_checkpoints/
 .vscode
+.cache
+.config
 
-images/
-images2/
-test_photos/
 
 ## Core latex/pdflatex auxiliary files:
 documentation/*.aux

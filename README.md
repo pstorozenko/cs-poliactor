@@ -36,7 +36,7 @@ By default app is available under `http://localhost:6113`
 
 # Usage
 
-![](app_screan.png)
+![](images/poliaktor_screen.png)
 
 After reaching proper URL, give the app an permissions to your webcam. Then all you have to do is wait to see results.
 
@@ -54,7 +54,7 @@ Client side is responsible only for capturing frames from webcam stream which is
 
 All computation is done at the server side. Server is written in [Flask](http://flask.pocoo.org/) with help of [Flask-socketIO](https://flask-socketio.readthedocs.io/en/latest/) to allow communication over web sockets.
 
-![](diagram.png)
+![](images/diagram.png)
 
 For face detection and encoding [face_recognition](https://github.com/ageitgey/face_recognition) package is used. Here we add a brief description of what is going on under the hood but for more (first hand) information about methods and models take a look at this [blog post](https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78).
 
@@ -81,6 +81,17 @@ Feces are compared with precomputed representations of predefined set of **4062*
 ## Finding the most similar actor
 
 `face_recognition` package is capable of finding the most similar photo on the fly, but in out application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use KNN classifier for that purpose.
+
+Talking about distance. The plot underneath depicts distribution of distances between embedding of all frames recorded for a person (based on 5 different people) and distances between that frames and returned, most similar actor.
+
+![](images/distribution.png)
+
+Since the neural network was trained to find exact person, not the one the most similar it's easy to notice two things (regardless units and scale):
+
+- photos of the same person can differ a lot. It is because we ask people not to be steady while recording as well as laptop camera gives quite noisy images.
+- most of returned pictures of actors are in specific, narrow range.
+
+Network is able to spot subtle differences in faces, but what is more visible, works great in terms of distinguishing people.
 
 ## Stability issues
 
