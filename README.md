@@ -38,7 +38,7 @@ By default app is available under `http://localhost:6113`
 
 ![](images/poliaktor_screen.png)
 
-After reaching proper URL, give the app an permissions to your webcam. Then all you have to do is wait to see results.
+After reaching proper URL, give the app permissions to your webcam. All you have to do now is to wait to see the results.
 
 On the bottom left webcam stream will be displayed with most similar actor's image and name above it. On the right there will be plot showing position of current embedding of captured face (with respect to the average).
 
@@ -72,7 +72,9 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - train any classifier to classify faces from your database
    - classify new images
 
-Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = 1$.
+Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = 1$. 
+
+> upewnić się co do n w knn
 
 # Processing methodology
 
@@ -80,7 +82,7 @@ Feces are compared with precomputed representations of predefined set of **4062*
 
 ## Finding the most similar actor
 
-`face_recognition` package is capable of finding the most similar photo on the fly, but in out application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use KNN classifier for that purpose.
+`face_recognition` package is capable of finding the most similar photo on the fly, but in our application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use KNN classifier for that purpose.
 
 Talking about distance. The plot underneath depicts distribution of distances between embedding of all frames recorded for a person (based on 5 different people) and distances between that frames and returned, most similar actor.
 
@@ -107,6 +109,6 @@ After that we've implemented averaging face embedding, which significantly impro
 
 The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
 
-One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent)
+One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent).
 
 > coś o PCA dodać
