@@ -2,11 +2,10 @@
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
 
-> dodać fotkę dwóch osób podobnych i że dla jednego zwróciło drugie> // Pasz
-
+![](images/pjt.png)
 # Installation
 
-The app can be run locally on your own machine. Due to `face_recognition` package requirements macOS and Linux machines are supported.
+The app can be run locally on your own machine. Due to `face_recognition` package requirements macOS and Linux machines are supported, however you can try [this](https://github.com/ageitgey/face_recognition/issues/175#issue-257710508) on Windows.
 
 Local requirements:
 
@@ -40,7 +39,7 @@ By default app is available under `http://localhost:6113`
 
 After reaching proper URL, give the app permissions to your webcam. All you have to do now is to wait to see the results.
 
-On the bottom left webcam stream will be displayed with most similar actor's image and name above it. On the right there will be plot showing position of current embedding of captured face (with respect to the average).
+On the bottom left webcam stream will be displayed with most similar actor's image and name above it. On the right there will be plot showing position of current embedding of captured face (with respect to the average). Bottom plot shows general view, while top plot shows closer view on yours face "neighbors".
 
 On topmost left position there is "control center". The number in the box determines number of webcam frames that are averaged while searching the most similar actor's photo. By clicking the `Reset` button you can reset plot and averaging process.
 
@@ -76,8 +75,6 @@ Faces are compared with precomputed representations of predefined set of **4062*
 
 # Processing methodology
 
-[//]: # (nazwa do zmiany)
-
 ## Finding the most similar actor
 
 `face_recognition` package is capable of finding the most similar photo on the fly, but in our application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use [KNN classifier](https://github.com/ageitgey/face_recognition/blob/master/examples/face_recognition_knn.py) for that purpose.
@@ -103,7 +100,13 @@ After that we've implemented averaging face embedding, which significantly impro
 
 ## Visualizing the results
 
-The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
+The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis). Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
+
+Plots show only first and second principal components.
 
 One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent).
 
+Red crosses represent your photos.
+At first glance it can be wierd that an algorithm returned not the nearest actor on a plot, but keep in mind that it's only projection of 128 dimensional space on 2D space.
+
+![](images/pca_wm.png)
