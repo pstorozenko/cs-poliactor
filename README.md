@@ -72,9 +72,7 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - train any classifier to classify faces from your database
    - classify new images
 
-Feces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = 1$. 
-
-> upewnić się co do n w knn
+Faces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = \sqrt{4062} = 63$ .
 
 # Processing methodology
 
@@ -82,7 +80,7 @@ Feces are compared with precomputed representations of predefined set of **4062*
 
 ## Finding the most similar actor
 
-`face_recognition` package is capable of finding the most similar photo on the fly, but in our application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use KNN classifier for that purpose.
+`face_recognition` package is capable of finding the most similar photo on the fly, but in our application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use [KNN classifier](https://github.com/ageitgey/face_recognition/blob/master/examples/face_recognition_knn.py) for that purpose.
 
 Talking about distance. The plot underneath depicts distribution of distances between embedding of all frames recorded for a person (based on 5 different people) and distances between that frames and returned, most similar actor.
 
@@ -103,12 +101,9 @@ During first tries, every response shows different person, even when we tried no
 
 After that we've implemented averaging face embedding, which significantly improve stability.
 
-[//]: # (tutaj trzeba wstawić wykresy o których rozmawialiśmy ostatnio)
-
 ## Visualizing the results
 
 The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with PCA. Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
 
 One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent).
 
-> coś o PCA dodać
