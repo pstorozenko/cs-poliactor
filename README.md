@@ -1,3 +1,7 @@
+> spis treści enumerowane
+
+> Eksperyment: 1) Co chcemy sprawdzić? 2) Jak to sprawdziliśmy? 3) Co z tego wyszło?
+
 # Your face seems famous!
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
@@ -82,6 +86,8 @@ Faces are compared with precomputed representations of predefined set of **4062*
 Talking about distance. The plot underneath depicts distribution of distances between embedding of all frames recorded for a person (based on 5 different people) and distances between that frames and returned, most similar actor.
 
 ![](images/distribution.png)
+
+> ile zdjęć każdej z osób, wzór
 
 Since the neural network was trained to find exact person, not the one the most similar it's easy to notice two things (regardless units and scale):
 
