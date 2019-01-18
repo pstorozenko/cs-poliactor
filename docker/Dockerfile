@@ -1,11 +1,8 @@
-FROM ubuntu:18.10
- 
-# Update OS and create superuser
-RUN apt-get update && \
-    apt-get -y upgrade
+# This is a sample Dockerfile you can modify to deploy your own app based on face_recognition
 
-RUN apt-get -y install python3-dev python3-pip
+FROM python:3.6-slim-stretch
 
+RUN apt-get -y update
 RUN apt-get install -y --fix-missing \
     build-essential \
     cmake \
@@ -15,7 +12,7 @@ RUN apt-get install -y --fix-missing \
     curl \
     graphicsmagick \
     libgraphicsmagick1-dev \
-    libatlas-base-dev \
+    libatlas-dev \
     libavcodec-dev \
     libavformat-dev \
     libgtk2.0-dev \
@@ -31,18 +28,30 @@ RUN apt-get install -y --fix-missing \
 
 RUN cd ~ && \
     mkdir -p dlib && \
-    git clone --single-branch https://github.com/davisking/dlib.git dlib/ && \
+    git clone -b 'v19.9' --single-branch https://github.com/davisking/dlib.git dlib/ && \
     cd  dlib/ && \
-    mkdir build && \
-    cd build && \
-    cmake .. && \
-    cmake --build . && \
-    cd .. && \
-    python3 setup.py install --yes
+    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
+
+
+# The rest of this file just runs an example script.
+
+# If you wanted to use this Dockerfile to run your own app instead, maybe you would do this:
+# COPY . /root/your_app_or_whatever
+# RUN cd /root/your_app_or_whatever && \
+#     pip3 install -r requirements.txt
+# RUN whatever_command_you_run_to_start_your_app
+
+# COPY . /root/face_recognition
+# RUN cd /root/face_recognition && \
+#     pip3 install -r requirements.txt && \
+#     python3 setup.py install
+
+# CMD cd /root/face_recognition/examples && \
+#     python3 recognize_faces_in_pictures.py
 
 # Install Python
-COPY reqs.txt .
-RUN pip3 install -r reqs.txt
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
 
 # Expose port for connection
 EXPOSE 6113
