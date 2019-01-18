@@ -10,7 +10,7 @@ cols = ["actor", "photo"] + ["enc_" + str(i) for i in range(128)]
 df = pd.DataFrame(columns = cols)
 i = 0
 for _, photo in enumerate(photos):
-    print(f"Photo {i} out of {len(photos) - 1}")
+    print("Photo {} out of {}".format(i, (len(photos) - 1)))
 
     start = photo.find('/')
     end = photo.find('/', start + 1)
