@@ -8,6 +8,10 @@
 	height: 100%;
 }
 
+h1, h3, p, button {
+    font-family: 'monospace';
+}
+
 #inner-div{
 	display: inline-flex;
 	flex-direction: column;
@@ -27,8 +31,8 @@
 	height: auto;
 }
 
-#control-div{
-	display: inline-flex;
+.horizontal{
+	display: inline-block;
 }
 
 video, canvas, img{
@@ -43,3 +47,18 @@ video {
 	width: 640px;
 }
 
+hr {
+    display: block;
+    margin-before: 0.5em;
+    margin-after: 0.5em;
+    margin-start: auto;
+    margin-end: auto;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    width: 100%;
+}
+
+.bottom-aligned {
+    vertical-align: bottom;
+}

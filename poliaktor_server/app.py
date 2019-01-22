@@ -24,17 +24,17 @@ facer = FacerKnn('resources/knn_model.clf', 'resources/actors_photos_encodings.p
 def reset_plot(_):
     facer.reset_plot()
 
+import time
 
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
+    start_time = time.time()
     frames = int(message['frames'])
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1]))).convert('RGB')
     image_np = np.array(image_PIL)
 
-    # start_time = time.time()
     who, path, coord, pca = facer.find_nearest(image_np, frames)
     print(who, path)
-    # print("--- %s seconds ---" % (time.time() - start_time))
     if path:
         with open(path, "rb") as image_file:
             image_string = base64.b64encode(image_file.read()).decode("utf-8")
@@ -44,7 +44,7 @@ def get_image(message):
         blank_img.save(buff, format="PNG")
         image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
 
-        who = [" "]
+        who = ["No one :("]
 
     fig = facer.get_plot(pca[0], pca[1])
     canvas = FigureCanvasAgg(fig)
@@ -59,6 +59,8 @@ def get_image(message):
              'plot': plot_string,
              'coord': coord
          })
+
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 @app.route('/')
 def index():

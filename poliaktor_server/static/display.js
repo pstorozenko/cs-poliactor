@@ -66,6 +66,7 @@ window.onload = function(){
 
 	function readCanvas(){
 		let canvasData = canvas.toDataURL();
+
         socket.emit('image_sink', {
             data: canvasData,
             frames: frames

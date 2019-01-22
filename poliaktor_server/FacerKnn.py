@@ -9,6 +9,11 @@ from matplotlib.lines import Line2D
 from sklearn.decomposition import PCA
 from collections import defaultdict
 
+MARKER_SIZE = 13
+LEGEND_FONT = 20
+PLOT_FONT = 13
+FIG_WIDTH = 11
+FIG_HEIGHT = 20
 
 class FacerKnn:
 
@@ -40,7 +45,7 @@ class FacerKnn:
         self.counter = 0
         self.fig = None
         self.reset_plot()
-        self.reset_limit = 15
+        self.reset_limit = 5
         self.reset_counter = 0
         print("FacerKnn initiated")
 
@@ -103,7 +108,7 @@ class FacerKnn:
         self.display_bank = None
         self.found_actors = pd.DataFrame(columns=self.colnames)
         plt.clf()
-        self.fig, self.axarr = plt.subplots(2, figsize=(13, 23))
+        self.fig, self.axarr = plt.subplots(2, figsize=(FIG_WIDTH, FIG_HEIGHT))
         faces = self.get_base_pca()
         self.axarr[1].scatter(x=faces.pca_0, y=faces.pca_1, s=1, c='black')
         self.axarr[1].xaxis.label.set_visible(False)
@@ -119,16 +124,16 @@ class FacerKnn:
         used = set()
         legend_elements = []
         for i, (init, name, pca0, pca1) in pd.DataFrame.iterrows(faces):
-            self.axarr[1].text(pca0, pca1, init, fontsize=12)
+            self.axarr[1].text(pca0, pca1, init, fontsize=PLOT_FONT, fontfamily='monospace')
             if init not in used:
                 used.add(init)
                 legend_elements.append(
-                    Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=13))
+                    Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=MARKER_SIZE))
 
         for arr in self.axarr:
             box = arr.get_position()
             arr.set_position([box.x0, box.y0, box.width * 0.97, box.height * 0.97])
-        self.axarr[1].legend(handles=legend_elements, loc='center left', fontsize=13, bbox_to_anchor=(1, 0.5))
+        self.axarr[1].legend(handles=legend_elements, loc='center left', fontsize=LEGEND_FONT, bbox_to_anchor=(1, 0.5), prop=dict(family='monospace'))
         plt.tight_layout()
         plt.subplots_adjust(wspace=0, hspace=0)
 
@@ -141,23 +146,22 @@ class FacerKnn:
             self.reset_counter = 0
             self.axarr[1].scatter(x, y, s=200, marker='x', color='red')
 
-            if self.display_bank.shape[0] > 2:
-                faces, actors = self.compute_pca()
-                self.axarr[0].clear()
-                self.axarr[0].scatter(faces[:, 0], faces[:, 1], s=200, marker='x', color='red')
+            faces, actors = self.compute_pca()
+            self.axarr[0].clear()
+            self.axarr[0].scatter(faces[:, 0], faces[:, 1], s=200, marker='x', color='red')
 
-                used = set()
-                legend_elements = []
-                for i, (tsne0, tsne1, init, name) in pd.DataFrame.iterrows(actors):
-                    self.axarr[0].scatter(tsne0, tsne1, s=0.001, marker='x', color='black')
-                    self.axarr[0].text(tsne0, tsne1, init, fontsize=12)
-                    if init not in used:
-                        used.add(init)
-                        legend_elements.append(
-                            Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=13))
+            used = set()
+            legend_elements = []
+            for i, (tsne0, tsne1, init, name) in pd.DataFrame.iterrows(actors):
+                self.axarr[0].scatter(tsne0, tsne1, s=0.001, marker='x', color='black')
+                self.axarr[0].text(tsne0, tsne1, init, fontsize=PLOT_FONT)
+                if init not in used:
+                    used.add(init)
+                    legend_elements.append(
+                        Line2D([0], [0], marker=f'${init}$', color='k', label=name, markersize=MARKER_SIZE))
 
-                self.axarr[0].legend(handles=legend_elements, loc='center left', fontsize=13, bbox_to_anchor=(1, 0.5))
-                plt.savefig('example.png')
+            self.axarr[0].legend(handles=legend_elements, loc='center left', fontsize=LEGEND_FONT, bbox_to_anchor=(1, 0.5),
+                                 prop=dict(family='monospace'))
 
             plt.draw()
 
