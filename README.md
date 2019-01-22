@@ -1,12 +1,27 @@
-> spis treści enumerowane
-
-> Eksperyment: 1) Co chcemy sprawdzić? 2) Jak to sprawdziliśmy? 3) Co z tego wyszło?
-
 # Your face seems famous!
 
 Have you ever thought which actor are you the most similar to? That's exactly what our app will tell you!
 
 ![](images/pjt.png)
+
+Table of Contents
+=================
+
+   * [Your face seems famous!](#your-face-seems-famous)
+   * [Installation](#installation)
+   * [Usage](#usage)
+   * [Technical info](#technical-info)
+      * [Performance](#performance)
+      * [Stability issues](#stability-issues)
+      * [Visualizing the results](#visualizing-the-results)
+   * [Experiment](#experiment)
+      * [What we want to check?](#what-we-want-to-check)
+      * [How we've done it?](#how-weve-done-it)
+      * [Results!](#results)
+      * [Comments](#comments)
+      * [Additional question](#additional-question)
+   * [Conclusions](#conclusions)
+
 # Installation
 
 The app can be run locally on your own machine. Due to `face_recognition` package requirements macOS and Linux machines are supported, however you can try [this](https://github.com/ageitgey/face_recognition/issues/175#issue-257710508) on Windows.
@@ -75,44 +90,67 @@ For face detection and encoding [face_recognition](https://github.com/ageitgey/f
    - train any classifier to classify faces from your database
    - classify new images
 
-Faces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with $n = \sqrt{4062} = 63$ .
+Faces are compared with precomputed representations of predefined set of **4062** images (**289** different actors) using KNN algorithm with n = 7 .
 
-# Processing methodology
-
-## Finding the most similar actor
+## Performance
 
 `face_recognition` package is capable of finding the most similar photo on the fly, but in our application we have to take some performance aspects into account. Based on info provided by package creators we've decided to use [KNN classifier](https://github.com/ageitgey/face_recognition/blob/master/examples/face_recognition_knn.py) for that purpose.
 
-Talking about distance. The plot underneath depicts distribution of distances between embedding of all frames recorded for a person (based on 5 different people) and distances between that frames and returned, most similar actor.
+## Stability issues
 
-![](images/distribution.png)
+From the beginning of project stability of responses was the biggest concern.
+Webcam images usually have poor quality which is highly dependent on light conditions.
+What is more, photos used in the project are quite diverse even looking at a single actor.
 
-> ile zdjęć każdej z osób, wzór
+During first tries, every response showed different person, even when we tried not to move our faces.
+Due to the fact that the KNN algorithm is used to find the most similar actor, we've tried increasing the *k* parameter.
+Unfortunately it didn't help a lot.
+
+After that we've implemented averaging face embedding, which significantly improved stability.
+
+## Visualizing the results
+
+The embedding produced by `face_recognition` package is a **128** dimensional vector.
+In order to investigate results we've decided to visualize this data after transforming with [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis).
+Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
+With more actors, plots are even more unreadable.
+
+Plots show only first and second principal components.
+
+Red crosses represent your photos.
+At first glance it can be wierd that an algorithm returned not the nearest actor on a plot, but keep in mind that it's only projection of 128 dimensional space on 2D space.
+
+
+# Experiment
+
+## What we want to check?
+
+After creating the app we decided to check how much distances (in embeddings space) of a single person differs compared to distances from person's actor's siblings.
+
+It may help to answer why our predictions are unstable.
+
+## How we've done it?
+
+We recorded 5-20 seconds of 6 different people and cut it into frames.
+For each of them, for every frame **e_i** we calculated distances (in embedding space) from every other frame **e_j** of the same person and distances between **e_i** and photos predicted for **e_j**.
+
+## Results!
+
+![](images/embeplot.png)
+
+## Comments
 
 Since the neural network was trained to find exact person, not the one the most similar it's easy to notice two things (regardless units and scale):
 
 - photos of the same person can differ a lot. It is because we ask people not to be steady while recording as well as laptop camera gives quite noisy images.
 - most of returned pictures of actors are in specific, narrow range.
 
-Network is able to spot subtle differences in faces, but what is more visible, works great in terms of distinguishing people.
-
-## Stability issues
-
-From the beginning of project stability of responses were the biggest concern. Webcam images usually have poor quality which is highly dependent on light conditions. What is more, photos used in the project are quite diverse even looking at a single actor.
-
-During first tries, every response shows different person, even when we tried not to move our faces. Due to the fact that KNN algorithm is used to find the most similar actor, we've tried increasing the *k* parameter. Not only it do not boost user experience but also adds unwanted ambiguity because single, the most similar photo was no longer available.
-
-After that we've implemented averaging face embedding, which significantly improve stability.
-
-## Visualizing the results
-
-The embedding produced by `face_recognition` package is **128** dimensional vector. In order to investigate results we've decided to visualize this data after transforming with [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis). Algorithm was trained on all available photos, but only top 50 actors with the most photos are displayed.
-
-Plots show only first and second principal components.
+## Additional question
 
 One of the first things that can be seen is visible division of the photos into two clusters. After investigation it turns out that they are men and women (which is quite consistent).
 
-Red crosses represent your photos.
-At first glance it can be wierd that an algorithm returned not the nearest actor on a plot, but keep in mind that it's only projection of 128 dimensional space on 2D space.
-
 ![](images/pca_wm.png)
+
+# Conclusions
+
+Network is able to spot subtle differences in faces, but what is more visible, works great in terms of distinguishing people!
