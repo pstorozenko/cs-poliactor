@@ -41,8 +41,8 @@ window.onload = function(){
             video.srcObject = stream;
             video.play();
             setTimeout(function () {
-                let dw = 0.7 * video.videoWidth;
-                let dh = 0.7 * video.videoHeight;
+                let dw = 1 * video.videoWidth;
+                let dh = 1 * video.videoHeight;
                 canvas.setAttribute('width', dw);
                 canvas.setAttribute('height', dh);
                 actor.setAttribute('width', dw);
@@ -66,6 +66,7 @@ window.onload = function(){
 
 	function readCanvas(){
 		let canvasData = canvas.toDataURL();
+
         socket.emit('image_sink', {
             data: canvasData,
             frames: frames

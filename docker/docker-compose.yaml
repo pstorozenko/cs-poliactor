@@ -1,7 +1,7 @@
-version: '2'
+version: '3'
 services:
   poliactor_server:
-    image: stelmachd/wb:poliaktor_slim
+    image: stelmachd/wb:poliaktor_slim_noavx
     environment:
       FLASK_DEBUG: 1
       FLASK_ENV: development
@@ -10,6 +10,6 @@ services:
       LANG: C.UTF-8
 
     ports:
-      - "6113:6113"
+      - "8000:8000"
     volumes:
       - ../poliaktor_server:/app

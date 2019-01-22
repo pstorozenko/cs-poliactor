@@ -30,7 +30,7 @@ RUN cd ~ && \
     mkdir -p dlib && \
     git clone -b 'v19.9' --single-branch https://github.com/davisking/dlib.git dlib/ && \
     cd  dlib/ && \
-    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
+    python3 setup.py install  --no USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
 
 # The rest of this file just runs an example script.
@@ -41,20 +41,24 @@ RUN cd ~ && \
 #     pip3 install -r requirements.txt
 # RUN whatever_command_you_run_to_start_your_app
 
-# COPY . /root/face_recognition
+# Install Python
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt && \
+    git clone https://github.com/ageitgey/face_recognition.git /root/face_recognition && \
+    cd /root/face_recognition && \
+    python3 setup.py install
+
+
+# COPY face_recognition /root/face_recognition
 # RUN cd /root/face_recognition && \
-#     pip3 install -r requirements.txt && \
+#     # pip3 install -r requirements.txt && \
 #     python3 setup.py install
 
 # CMD cd /root/face_recognition/examples && \
 #     python3 recognize_faces_in_pictures.py
 
-# Install Python
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
-
 # Expose port for connection
-EXPOSE 6113
+EXPOSE 8000
 
 # Add requirements.txt
 RUN mkdir /app

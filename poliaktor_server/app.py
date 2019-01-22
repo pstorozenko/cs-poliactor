@@ -25,16 +25,22 @@ def reset_plot(_):
     facer.reset_plot()
 
 
+@socketio.on('disconnect')
+def on_disconnect():
+    global disconnected
+    disconnected = '/'
+    facer.reset_plot()
+
+
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
+    # start_time = time.time()
     frames = int(message['frames'])
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1]))).convert('RGB')
     image_np = np.array(image_PIL)
 
-    # start_time = time.time()
     who, path, coord, pca = facer.find_nearest(image_np, frames)
     print(who, path)
-    # print("--- %s seconds ---" % (time.time() - start_time))
     if path:
         with open(path, "rb") as image_file:
             image_string = base64.b64encode(image_file.read()).decode("utf-8")
@@ -44,7 +50,7 @@ def get_image(message):
         blank_img.save(buff, format="PNG")
         image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
 
-        who = [" "]
+        who = ["No one :("]
 
     fig = facer.get_plot(pca[0], pca[1])
     canvas = FigureCanvasAgg(fig)
@@ -60,10 +66,13 @@ def get_image(message):
              'coord': coord
          })
 
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=6113)
+    socketio.run(app, host='0.0.0.0', port=8000)

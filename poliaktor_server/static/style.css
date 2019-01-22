@@ -8,6 +8,10 @@
 	height: 100%;
 }
 
+h1, h3, p, button {
+    font-family: 'monospace';
+}
+
 #inner-div{
 	display: inline-flex;
 	flex-direction: column;
@@ -27,7 +31,7 @@
 	height: auto;
 }
 
-#control-div{
+.horizontal{
 	display: inline-flex;
 }
 
@@ -40,6 +44,17 @@ video {
 }
 
 .picture {
-	width: 448px;
+	width: 640px;
 }
 
+hr {
+    display: block;
+    margin-before: 0.5em;
+    margin-after: 0.5em;
+    margin-start: auto;
+    margin-end: auto;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    width: 100%;
+}
