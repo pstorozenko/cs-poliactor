@@ -32,7 +32,7 @@ h1, h3, p, button {
 }
 
 .horizontal{
-	display: inline-block;
+	display: inline-flex;
 }
 
 video, canvas, img{
@@ -57,8 +57,4 @@ hr {
     border-style: inset;
     border-width: 1px;
     width: 100%;
-}
-
-.bottom-aligned {
-    vertical-align: bottom;
 }

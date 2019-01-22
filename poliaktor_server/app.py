@@ -24,11 +24,17 @@ facer = FacerKnn('resources/knn_model.clf', 'resources/actors_photos_encodings.p
 def reset_plot(_):
     facer.reset_plot()
 
-import time
+
+@socketio.on('disconnect')
+def on_disconnect():
+    global disconnected
+    disconnected = '/'
+    facer.reset_plot()
+
 
 @socketio.on('image_sink', namespace='/test')
 def get_image(message):
-    start_time = time.time()
+    # start_time = time.time()
     frames = int(message['frames'])
     image_PIL = Image.open(io.BytesIO(base64.b64decode(message['data'].split(',')[1]))).convert('RGB')
     image_np = np.array(image_PIL)
@@ -60,7 +66,8 @@ def get_image(message):
              'coord': coord
          })
 
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print("--- %s seconds ---" % (time.time() - start_time))
+
 
 @app.route('/')
 def index():
@@ -68,4 +75,4 @@ def index():
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=6113)
+    socketio.run(app, host='0.0.0.0', port=8000)

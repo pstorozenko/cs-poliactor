@@ -30,7 +30,7 @@ RUN cd ~ && \
     mkdir -p dlib && \
     git clone -b 'v19.9' --single-branch https://github.com/davisking/dlib.git dlib/ && \
     cd  dlib/ && \
-    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
+    python3 setup.py install  --no USE_AVX_INSTRUCTIONS --no DLIB_USE_CUDA
 
 
 # The rest of this file just runs an example script.
@@ -58,7 +58,7 @@ RUN pip3 install -r requirements.txt && \
 #     python3 recognize_faces_in_pictures.py
 
 # Expose port for connection
-EXPOSE 6113
+EXPOSE 8000
 
 # Add requirements.txt
 RUN mkdir /app
