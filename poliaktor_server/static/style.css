@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+#outer-div {
+	position: relative;
+	display: inline-flex;
+	justify-content: space-evenly;
+	width: 100%;
+	height: 100%;
+}
+
+h1, h3, p, button {
+    font-family: 'monospace';
+}
+
+#inner-div{
+	display: inline-flex;
+	flex-direction: column;
+	position:relative;
+	flex-basis: 25%;
+	height: auto;
+}
+
+#img-div{
+	position: relative;
+	flex-basis: 55%;
+	height: available;
+}
+
+#plot-img{
+	width: 100%;
+	height: auto;
+}
+
+.horizontal{
+	display: inline-flex;
+}
+
+video, canvas, img{
+	background-color: #000000;
+}
+
+video {
+	display: none;
+}
+
+.picture {
+	width: 640px;
+}
+
+hr {
+    display: block;
+    margin-before: 0.5em;
+    margin-after: 0.5em;
+    margin-start: auto;
+    margin-end: auto;
+    overflow: hidden;
+    border-style: inset;
+    border-width: 1px;
+    width: 100%;
+}
