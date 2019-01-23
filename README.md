@@ -54,7 +54,7 @@ By default app is available under `http://localhost:6113`
 
 # Usage
 
-![](images/poliaktor_screen.png)
+![](images/new_vertical.png)
 
 After reaching proper URL, give the app permissions to your webcam. All you have to do now is to wait to see the results.
 
