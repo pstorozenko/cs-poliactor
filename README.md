@@ -132,7 +132,19 @@ It may help to answer why our predictions are unstable.
 ## How we've done it?
 
 We recorded 5-20 seconds of 6 different people and cut it into frames.
-For each of them, for every frame **e_i** we calculated distances (in embedding space) from every other frame **e_j** of the same person and distances between **e_i** and photos predicted for **e_j**.
+For every person **k**, for every frame **e_i** we calculated distances (in embedding space) from every other frame **e_j** of the same person and distances between **e_i** and photos predicted for **e_j**.
+
+To put it into equations:
+
+First plot:
+
+![](images/top_eq.png)
+
+Second plot:
+
+![](images/bot_eq.png)
+
+Third plot is a sum of two above.
 
 ## Results!
 
@@ -154,3 +166,8 @@ One of the first things that can be seen is visible division of the photos into 
 # Conclusions
 
 Network is able to spot subtle differences in faces, but what is more visible, works great in terms of distinguishing people!
+
+# Other projects
+
+This project was made during course *Case Studies* at *Warsaw University of Technology*.
+If you want to check our friends projects, visit [Case Studies2019W](https://github.com/pbiecek/CaseStudies2019W)!
